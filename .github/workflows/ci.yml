@@ -1,0 +1,33 @@
+name: CI                                                                                                              
+   
+  on:                                                                                                                   
+    push:         
+      branches:
+        - "feature/**"
+        - develop
+    pull_request:
+      branches:
+        - develop
+        - main
+
+  jobs:
+    lint-and-test:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v4
+
+        - uses: actions/setup-python@v5
+          with:
+            python-version: "3.11"
+
+        - name: Install dependencies
+          run: |
+            pip install -r ingestion/anac/requirements.txt
+            pip install -r ingestion/anac/requirements-dev.txt
+
+        - name: Lint with flake8
+          run: flake8 ingestion/anac/extract.py
+
+        - name: Run tests
+          run: pytest ingestion/anac/
