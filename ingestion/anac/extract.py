@@ -5,7 +5,7 @@ from botocore.client import Config
 MINIO_ENDPOINT = "http://localhost:9000"
 MINIO_ACCESS_KEY = "minioadmin"
 MINIO_SECRET_KEY = "minioadmin"
-BUCKET_NAME = "anac-raw"
+BUCKET_NAME = "anac-raw" #ajuste
 
 
 def get_s3_client():
