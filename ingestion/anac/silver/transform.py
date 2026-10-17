@@ -35,8 +35,11 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
 
     for col in str_cols:
         sample = df[col].dropna().head(100)
-        if len(sample) > 0 and sample.str.match(r"^\d{2}/\d{2}/\d{4}$").all():
-            df[col] = pd.to_datetime(df[col], format="%d/%m/%Y", errors="coerce")
+        is_date = sample.str.match(r"^\d{2}/\d{2}/\d{4}$").all()
+        if len(sample) > 0 and is_date:
+            df[col] = pd.to_datetime(
+                df[col], format="%d/%m/%Y", errors="coerce"
+            )
 
     return df
 
