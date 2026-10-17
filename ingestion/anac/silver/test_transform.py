@@ -19,7 +19,7 @@ def test_transform_converts_date_columns():
 def test_transform_ignores_mixed_columns():
     df = pd.DataFrame({"EMPRESA": ["GOL", "01/01/2024"]})
     result = transform(df)
-    assert result["EMPRESA"].dtype == object
+    assert not pd.api.types.is_datetime64_any_dtype(result["EMPRESA"])
 
 
 def test_transform_preserves_numeric_columns():
