@@ -27,7 +27,7 @@ jobs:
           pip install -r ingestion/anac/requirements-dev.txt
 
       - name: Lint with flake8
-        run: flake8 ingestion/anac/bronze/
+        run: flake8 ingestion/anac/bronze/ ingestion/anac/silver/
 
       - name: Run tests
-        run: pytest ingestion/anac/bronze/
+        run: pytest ingestion/anac/bronze/ ingestion/anac/silver/
