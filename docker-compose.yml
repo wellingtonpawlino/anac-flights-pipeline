@@ -1,5 +1,29 @@
 version: "3.8"
 
+x-airflow-common: &airflow-common
+  image: apache/airflow:2.8.1
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/analytics
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__WEBSERVER__SECRET_KEY: "anac_secret_key"
+    _AIRFLOW_DB_MIGRATE: "true"
+    _AIRFLOW_WWW_USER_CREATE: "true"
+    _AIRFLOW_WWW_USER_USERNAME: admin
+    _AIRFLOW_WWW_USER_PASSWORD: airflow
+    BRONZE_BUCKET: "anac-raw-dev"
+    SILVER_BUCKET: "anac-silver-dev"
+    AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+    AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+    AWS_DEFAULT_REGION: "sa-east-1"
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags
+    - ./ingestion:/opt/airflow/ingestion
+  depends_on:
+    - postgres
+  networks:
+    - anac_network
+
 services:
   postgres:
     image: postgres:15
@@ -13,33 +37,17 @@ services:
     networks:
       - anac_network
 
-  airflow:
-    image: apache/airflow:2.8.1
-    container_name: anac_airflow
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/analytics
-      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      AIRFLOW__WEBSERVER__SECRET_KEY: "anac_secret_key"
-      _AIRFLOW_DB_MIGRATE: "true"
-      _AIRFLOW_WWW_USER_CREATE: "true"
-      _AIRFLOW_WWW_USER_USERNAME: admin
-      _AIRFLOW_WWW_USER_PASSWORD: airflow
-      BRONZE_BUCKET: "anac-raw-dev"
-      SILVER_BUCKET: "anac-silver-dev"
-      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
-      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
-      AWS_DEFAULT_REGION: "sa-east-1"
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./ingestion:/opt/airflow/ingestion
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: anac_airflow_webserver
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres
     command: webserver
-    networks:
-      - anac_network
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: anac_airflow_scheduler
+    command: scheduler
 
 networks:
   anac_network:
