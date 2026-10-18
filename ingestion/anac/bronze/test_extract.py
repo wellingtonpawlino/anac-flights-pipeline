@@ -15,5 +15,5 @@ def test_extract_uploads_to_s3(mock_get, mock_boto):
     extract("http://fake-url.com/file.csv", "pasta/arquivo.csv")
 
     mock_s3.upload_fileobj.assert_called_once_with(
-        b"fake content", "anac-raw", "pasta/arquivo.csv"
+        b"fake content", "anac-raw-dev", "pasta/arquivo.csv"
     )

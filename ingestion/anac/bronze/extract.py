@@ -1,21 +1,13 @@
+import os
+
 import boto3
 import requests
-from botocore.client import Config
 
-MINIO_ENDPOINT = "http://localhost:9000"
-MINIO_ACCESS_KEY = "minioadmin"
-MINIO_SECRET_KEY = "minioadmin"
-BUCKET_NAME = "anac-raw"
+BUCKET_NAME = os.environ.get("BRONZE_BUCKET", "anac-raw-dev")
 
 
 def get_s3_client():
-    return boto3.client(
-        "s3",
-        endpoint_url=MINIO_ENDPOINT,
-        aws_access_key_id=MINIO_ACCESS_KEY,
-        aws_secret_access_key=MINIO_SECRET_KEY,
-        config=Config(signature_version="s3v4"),
-    )
+    return boto3.client("s3")
 
 
 def extract(url: str, s3_key: str):
