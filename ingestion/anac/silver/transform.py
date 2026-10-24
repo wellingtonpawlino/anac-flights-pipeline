@@ -1,5 +1,7 @@
 import io
 import os
+import re
+import unicodedata
 
 import boto3
 import pandas as pd
@@ -44,6 +46,18 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def normalize_column_names(df: pd.DataFrame) -> pd.DataFrame:
+    def _normalize(col: str) -> str:
+        col = col.strip().lower()
+        col = unicodedata.normalize("NFKD", col)
+        col = col.encode("ascii", errors="ignore").decode("ascii")
+        col = re.sub(r"[^a-z0-9]+", "_", col)
+        return col.strip("_")
+
+    df.columns = [_normalize(c) for c in df.columns]
+    return df
+
+
 def write_silver(s3_client, df: pd.DataFrame, bucket: str, key: str):
     buffer = io.BytesIO()
     df.to_parquet(buffer, index=False, engine="pyarrow")
@@ -56,6 +70,7 @@ def run():
     s3 = get_s3_client()
     df = read_bronze(s3, BRONZE_BUCKET, BRONZE_KEY)
     df = transform(df)
+    df = normalize_column_names(df)
     write_silver(s3, df, SILVER_BUCKET, SILVER_KEY)
 
 

@@ -11,14 +11,19 @@ x-airflow-common: &airflow-common
     _AIRFLOW_WWW_USER_CREATE: "true"
     _AIRFLOW_WWW_USER_USERNAME: admin
     _AIRFLOW_WWW_USER_PASSWORD: airflow
+    _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core==1.8.0 dbt-athena-community==1.8.0"
     BRONZE_BUCKET: "anac-raw-dev"
     SILVER_BUCKET: "anac-silver-dev"
+    GOLD_BUCKET: "anac-gold-dev"
+    DBT_TARGET: "dev"
+    DBT_ENV: "dev"
     AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
     AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
     AWS_DEFAULT_REGION: "sa-east-1"
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./ingestion:/opt/airflow/ingestion
+    - ./dbt:/opt/airflow/dbt
   depends_on:
     - postgres
   networks:

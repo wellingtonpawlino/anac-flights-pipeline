@@ -22,12 +22,21 @@ jobs:
         run: |
           pip install -r ingestion/anac/requirements.txt
           pip install -r ingestion/anac/requirements-dev.txt
+          pip install -r dbt/requirements.txt
 
       - name: Lint
         run: flake8 ingestion/anac/bronze/ ingestion/anac/silver/
 
       - name: Test
         run: pytest ingestion/anac/bronze/ ingestion/anac/silver/
+
+      - name: dbt Parse
+        working-directory: dbt
+        run: dbt parse --profiles-dir .
+        env:
+          DBT_ENV: dev
+          GOLD_BUCKET: anac-gold-dev
+          AWS_DEFAULT_REGION: sa-east-1
 
   terraform-plan-dev:
     runs-on: ubuntu-latest
@@ -58,8 +67,4 @@ jobs:
 
       - name: Terraform Plan (dev)
         working-directory: terraform
-        run: |
-          terraform plan \
-            -var-file=environments/dev.tfvars \
-            -var="db_password=${{ secrets.DB_PASSWORD }}" \
-            -var="allowed_cidr=${{ secrets.ALLOWED_CIDR }}"
+        run: terraform plan -var-file=environments/dev.tfvars

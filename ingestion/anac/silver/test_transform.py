@@ -1,7 +1,7 @@
 import io
 import pandas as pd
 from unittest.mock import MagicMock
-from transform import read_bronze, transform, write_silver
+from transform import normalize_column_names, read_bronze, transform, write_silver
 
 
 def test_transform_strips_whitespace():
@@ -38,6 +38,22 @@ def test_read_bronze_parses_csv():
     assert list(df.columns) == ["EMPRESA", "DATA_REF"]
     assert df["EMPRESA"].iloc[0] == "GOL"
     assert pd.isna(df["DATA_REF"].iloc[1])
+
+
+def test_normalize_column_names():
+    df = pd.DataFrame({
+        "EMPRESA (SIGLA)": ["GOL"],
+        "MÊS": [1],
+        "DISTÂNCIA VOADA (KM)": [100.0],
+        "PASSAGEIROS GRÁTIS": [5],
+    })
+    result = normalize_column_names(df)
+    assert list(result.columns) == [
+        "empresa_sigla",
+        "mes",
+        "distancia_voada_km",
+        "passageiros_gratis",
+    ]
 
 
 def test_write_silver_calls_put_object():

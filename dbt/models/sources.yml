@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: silver
+    database: awsdatacatalog
+    schema: "anac_silver_{{ env_var('DBT_ENV', 'dev') }}"
+    description: "Camada silver com dados de voos ANAC em Parquet"
+    tables:
+      - name: dados_estatisticos
+        description: "Dados estatísticos do transporte aéreo (mensal) — catalogado pelo Glue Crawler"
