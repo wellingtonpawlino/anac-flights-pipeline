@@ -29,8 +29,4 @@ jobs:
 
       - name: Terraform Apply (prod)
         working-directory: terraform
-        run: |
-          terraform apply -auto-approve \
-            -var-file=environments/prod.tfvars \
-            -var="db_password=${{ secrets.DB_PASSWORD_PROD }}" \
-            -var="allowed_cidr=${{ secrets.ALLOWED_CIDR_PROD }}"
+        run: terraform apply -auto-approve -var-file=environments/prod.tfvars
