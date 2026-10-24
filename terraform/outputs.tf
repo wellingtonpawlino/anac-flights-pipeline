@@ -10,6 +10,6 @@ output "s3_gold_bucket" {
   value = module.s3_gold.bucket_name
 }
 
-output "rds_endpoint" {
-  value = module.rds.endpoint
-}
+# output "rds_endpoint" {
+#   value = module.rds.endpoint
+# }

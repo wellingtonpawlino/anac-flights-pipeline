@@ -14,6 +14,7 @@ def extract(url: str, s3_key: str):
     response = requests.get(url, stream=True)
     response.raise_for_status()
 
+    response.raw.decode_content = True
     s3 = get_s3_client()
     s3.upload_fileobj(response.raw, BUCKET_NAME, s3_key)
     print(f"Uploaded {s3_key} to {BUCKET_NAME}")
