@@ -1,7 +1,12 @@
 import io
 import pandas as pd
 from unittest.mock import MagicMock
-from transform import normalize_column_names, read_bronze, transform, write_silver
+from transform import (
+    normalize_column_names,
+    read_bronze,
+    transform,
+    write_silver,
+)
 
 
 def test_transform_strips_whitespace():
