@@ -6,6 +6,7 @@ on:
       - develop
     paths:
       - "terraform/**"
+  workflow_dispatch:
 
 jobs:
   terraform-apply-dev:
