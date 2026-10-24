@@ -11,7 +11,7 @@ x-airflow-common: &airflow-common
     _AIRFLOW_WWW_USER_CREATE: "true"
     _AIRFLOW_WWW_USER_USERNAME: admin
     _AIRFLOW_WWW_USER_PASSWORD: airflow
-    _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core==1.8.0 dbt-athena-community==1.8.0"
+    _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core==1.8.0 dbt-athena-community==1.8.4"
     BRONZE_BUCKET: "anac-raw-dev"
     SILVER_BUCKET: "anac-silver-dev"
     GOLD_BUCKET: "anac-gold-dev"
