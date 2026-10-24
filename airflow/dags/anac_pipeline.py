@@ -4,11 +4,11 @@ from datetime import datetime
 
 with DAG(
     dag_id="anac_pipeline",
-    description="Extrai dados da ANAC (bronze) e transforma em Parquet (silver)",
+    description="Extrai dados da ANAC (bronze), transforma em Parquet (silver) e agrega em Athena (gold)",
     start_date=datetime(2025, 11, 5),
     schedule_interval="0 4 * * *",
     catchup=False,
-    tags=["anac", "bronze", "silver"],
+    tags=["anac", "bronze", "silver", "gold"],
 ) as dag:
 
     bronze = BashOperator(
@@ -23,4 +23,11 @@ with DAG(
         retries=2,
     )
 
-    bronze >> silver
+    gold = BashOperator(
+        task_id="gold_dbt",
+        bash_command="cd /opt/airflow/dbt && dbt run --profiles-dir /opt/airflow/dbt",
+        env={"DBT_TARGET": "dev", "DBT_ENV": "dev"},
+        retries=1,
+    )
+
+    bronze >> silver >> gold

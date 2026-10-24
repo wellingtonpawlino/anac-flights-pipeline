@@ -20,9 +20,9 @@ module "s3_gold" {
   environment = var.environment
 }
 
-# module "rds" {
-#   source       = "./modules/rds"
-#   environment  = var.environment
-#   db_password  = var.db_password
-#   allowed_cidr = var.allowed_cidr
-# }
+module "athena" {
+  source        = "./modules/athena"
+  environment   = var.environment
+  silver_bucket = module.s3_silver.bucket_name
+  gold_bucket   = module.s3_gold.bucket_name
+}

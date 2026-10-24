@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: fact_flights_by_airline
+    description: "Métricas agregadas de voos por empresa aérea, mês e natureza"
+    columns:
+      - name: empresa_sigla
+        tests:
+          - not_null
+      - name: ano
+        tests:
+          - not_null
+      - name: mes
+        tests:
+          - not_null
+      - name: taxa_ocupacao
+        description: "RPK / ASK — proporção de assentos-quilômetros ocupados"
+
+  - name: fact_flights_by_route
+    description: "Métricas de voos por rota (origem → destino) e mês"
+    columns:
+      - name: origem_sigla
+        tests:
+          - not_null
+      - name: destino_sigla
+        tests:
+          - not_null
+      - name: ano
+        tests:
+          - not_null
+
+  - name: fact_flights_monthly
+    description: "Visão mensal consolidada do transporte aéreo"
+    columns:
+      - name: ano
+        tests:
+          - not_null
+      - name: mes
+        tests:
+          - not_null
+      - name: natureza
+        tests:
+          - not_null

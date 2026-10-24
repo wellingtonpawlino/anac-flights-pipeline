@@ -1,0 +1,19 @@
+anac_athena:
+  target: "{{ env_var('DBT_TARGET', 'dev') }}"
+  outputs:
+    dev:
+      type: athena
+      region_name: "{{ env_var('AWS_DEFAULT_REGION', 'sa-east-1') }}"
+      s3_staging_dir: "s3://{{ env_var('GOLD_BUCKET', 'anac-gold-dev') }}/athena-results/"
+      s3_data_dir: "s3://{{ env_var('GOLD_BUCKET', 'anac-gold-dev') }}/models/"
+      schema: anac_gold_dev
+      database: awsdatacatalog
+      work_group: anac-dev
+    prod:
+      type: athena
+      region_name: "{{ env_var('AWS_DEFAULT_REGION', 'sa-east-1') }}"
+      s3_staging_dir: "s3://{{ env_var('GOLD_BUCKET', 'anac-gold-prod') }}/athena-results/"
+      s3_data_dir: "s3://{{ env_var('GOLD_BUCKET', 'anac-gold-prod') }}/models/"
+      schema: anac_gold_prod
+      database: awsdatacatalog
+      work_group: anac-prod

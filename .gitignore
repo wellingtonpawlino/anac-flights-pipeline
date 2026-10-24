@@ -6,6 +6,11 @@ __pycache__/
 .infra/
 .env
 
+# dbt
+dbt/logs/
+dbt/.user.yml
+dbt/target/
+
 # Terraform
 .terraform/
 .terraform.lock.hcl

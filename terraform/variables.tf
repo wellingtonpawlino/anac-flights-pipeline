@@ -9,13 +9,3 @@ variable "aws_region" {
   description = "AWS region"
 }
 
-variable "db_password" {
-  type        = string
-  sensitive   = true
-  description = "RDS master password"
-}
-
-variable "allowed_cidr" {
-  type        = string
-  description = "CIDR allowed to connect to RDS (your IP /32)"
-}
