@@ -28,8 +28,4 @@ jobs:
 
       - name: Terraform Apply (dev)
         working-directory: terraform
-        run: |
-          terraform apply -auto-approve \
-            -var-file=environments/dev.tfvars \
-            -var="db_password=${{ secrets.DB_PASSWORD }}" \
-            -var="allowed_cidr=${{ secrets.ALLOWED_CIDR }}"
+        run: terraform apply -auto-approve -var-file=environments/dev.tfvars
