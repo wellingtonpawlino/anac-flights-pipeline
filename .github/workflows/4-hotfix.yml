@@ -1,0 +1,30 @@
+name: 4 · Hotfix
+
+on:
+  push:
+    branches:
+      - "hotfix/**"
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r ingestion/anac/requirements.txt
+          pip install -r ingestion/anac/requirements-dev.txt
+
+      - name: Lint
+        run: flake8 ingestion/anac/bronze/ ingestion/anac/silver/
+
+      - name: Test
+        run: pytest ingestion/anac/bronze/ ingestion/anac/silver/
