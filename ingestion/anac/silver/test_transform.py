@@ -36,7 +36,10 @@ def test_transform_preserves_numeric_columns():
 def test_read_bronze_parses_csv():
     mock_s3 = MagicMock()
     # First line is ANAC metadata row (skipped via skiprows=1)
-    csv_content = b"Atualizado em: 2026-10-24\nEMPRESA;DATA_REF\nGOL;01/01/2024\nLATAM;-\n"
+    csv_content = (
+        b"Atualizado em: 2026-10-24\n"
+        b"EMPRESA;DATA_REF\nGOL;01/01/2024\nLATAM;-\n"
+    )
     mock_s3.get_object.return_value = {"Body": io.BytesIO(csv_content)}
 
     df = read_bronze(mock_s3, "anac-raw-dev", "test.csv")
