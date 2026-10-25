@@ -32,7 +32,7 @@ def read_bronze(s3_client, bucket: str, key: str) -> pd.DataFrame:
 def transform(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
-    str_cols = df.select_dtypes(include=["object", "str"]).columns
+    str_cols = df.select_dtypes(include=["object"]).columns
     df[str_cols] = df[str_cols].apply(lambda col: col.str.strip())
 
     for col in str_cols:
