@@ -26,7 +26,6 @@ with DAG(
     gold = BashOperator(
         task_id="gold_dbt",
         bash_command="cd /opt/airflow/dbt && /home/airflow/.local/bin/dbt run --profiles-dir /opt/airflow/dbt",
-        env={"DBT_TARGET": "dev", "DBT_ENV": "dev"},
         retries=1,
     )
 
