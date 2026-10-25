@@ -19,10 +19,10 @@ models:
   - name: fact_flights_by_route
     description: "Métricas de voos por rota (origem → destino) e mês"
     columns:
-      - name: origem_sigla
+      - name: aeroporto_de_origem_sigla
         data_tests:
           - not_null
-      - name: destino_sigla
+      - name: aeroporto_de_destino_sigla
         data_tests:
           - not_null
       - name: ano

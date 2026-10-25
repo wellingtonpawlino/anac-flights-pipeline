@@ -22,8 +22,10 @@ def read_bronze(s3_client, bucket: str, key: str) -> pd.DataFrame:
     response = s3_client.get_object(Bucket=bucket, Key=key)
     return pd.read_csv(
         io.BytesIO(response["Body"].read()),
-        encoding="latin-1",
+        encoding="utf-8-sig",
         sep=";",
+        skiprows=1,
+        decimal=",",
         na_values=NULL_VALUES,
         keep_default_na=True,
     )
