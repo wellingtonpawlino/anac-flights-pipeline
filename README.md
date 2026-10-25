@@ -1,5 +1,7 @@
 # ANAC Flights Pipeline
 
+![ANAC Flights Pipeline](assets/capa.png)
+
 Pipeline de dados de aviação civil brasileira com arquitetura medallion no AWS.
 
 Coleta o dataset estatístico da ANAC (~47 MB, 1,1 milhão de registros, série 2000–hoje), normaliza e estrutura em três camadas — Bronze, Silver e Gold — expondo tabelas analíticas prontas para consulta no Amazon Athena.
